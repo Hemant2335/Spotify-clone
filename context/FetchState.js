@@ -10,6 +10,7 @@ const FetchState = (props)=>{
     const client_secret = "59748730c6384bcd839c99f34f94bf8d";
     const auth_token = Buffer.from(`${client_id}:${client_secret}` , 'utf-8').toString('base64');
     const [acesstoken, setacesstoken] = useState("")
+    const [authtoken, setauthtoken] = useState("");
     const getAuth = async () =>{
         try {
             
@@ -22,7 +23,6 @@ const FetchState = (props)=>{
                   'Content-Type': 'application/x-www-form-urlencoded' 
                 }
               })
-            console.log(response.data.access_token)
             setacesstoken(response.data.access_token)
         } catch (error) {
             console.log("Something went wrong")            
@@ -35,7 +35,7 @@ const FetchState = (props)=>{
 
 
     return (
-        <FetchContext.Provider value={{acesstoken}}>
+        <FetchContext.Provider value={{acesstoken , authtoken, setauthtoken}}>
             {props.children}
         </FetchContext.Provider>
     )

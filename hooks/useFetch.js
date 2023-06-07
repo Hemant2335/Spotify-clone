@@ -24,7 +24,6 @@ const useFetch = (token , param) =>{
         try {
             seterror(false)
             const response = await axios.request(api_url , options);
-            console.log(response.data);
             setdata(response.data)
             setisLoading(false)
         } catch (error) {

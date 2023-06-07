@@ -9,26 +9,27 @@ import ArtCard from '../ArtCard/ArtCard'
 
 
 const Artist = () => {
-    const { acesstoken } = useContext(FetchContext);
+  const { acesstoken  , authtoken } = useContext(FetchContext);
   const { data, isLoading, error, setdata, seterror, setisLoading } = useFetch(
-    acesstoken,
-    "artists/3b3PfZsOrb3cPzSCZjawbr/related-artists"
+    authtoken,
+    "me/top/artists/"
   );
 
   useEffect(() => {
-    console.log(data?.artists?.[0]?.images?.[0]);
+    console.log(authtoken)
+    console.log(data);
   }, [acesstoken]);
 
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headtext}>Top Artists</Text>
+      <Text style={styles.headtext}>Your Artists</Text>
       {isLoading ? (
         <ActivityIndicator size="large"></ActivityIndicator>
       ) : (
         <SafeAreaView>
             <FlatList
-              data={data?.artists}
+              data={data?.items}
               renderItem={({ item }) => <ArtCard item={item} />}
               keyExtractor={(item) => item?.id}
               contentContainerStyle={{ columnGap: 20 }}

@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, Image, ActivityIndicator } from "react-native";
+import { View, Text, Image, ActivityIndicator , TouchableOpacity } from "react-native";
 import styles from "./Playlist.style";
 import useFetch from "../../hooks/useFetch";
 import poster from "../../asset/images/poster.jpg";
 import { useEffect } from "react";
 import { useContext } from "react";
 import FetchContext from "../../context/FetchContext";
+import { useRouter } from "expo-router";
 
 const Playlist = () => {
 
@@ -14,10 +15,14 @@ const Playlist = () => {
 
 //   const { data, isLoading, error, setdata, seterror, setisLoading } =
 //     useFetch(token);
+
+    const router = useRouter();
+
 useEffect(() => {
   console.log(data?.name);
 }, [acesstoken]);
 
+  const random = Math.floor(Math.random() * 10);
 
   return (
     <View style={styles.container}>
@@ -29,13 +34,13 @@ useEffect(() => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <View style={styles.cardcontainer}>
+        <TouchableOpacity style={styles.cardcontainer} onPress={()=>{router.push(`/Playlists/${data?.playlists?.items?.[random]?.id}`)}}>
           <Image
-            source={{uri : data?.playlists?.items?.[Math.floor(Math.random() * 10)]?.images?.[0]?.url}}
+            source={{uri : data?.playlists?.items?.[random]?.images?.[0]?.url}}
             style={styles.cardImg}
           />
-          <Text style={styles.cardtext} >{data?.playlists?.items?.[Math.floor(Math.random() * 10)]?.name}</Text>
-        </View>
+          <Text style={styles.cardtext} >{data?.playlists?.items?.[random]?.name}</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
