@@ -4,136 +4,58 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
+  Image
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import SpotifyWebApi from "spotify-web-api-node";
 import FetchContext from "../../context/FetchContext";
 import { useContext } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useSearchParams } from "expo-router";
-import axios from "axios";
+import poster from "../../asset/images/headphones.jpg";
+import styles from "./Playercomp.style";
+import replay from "../../asset/icons/replay.png"
+import shuffle from "../../asset/icons/shuffle.png"
+import backward from "../../asset/icons/backward-arrows-couple.png"
+import forward from "../../asset/icons/next-button.png"
+import play from "../../asset/icons/play-button.png";
 
-const spotifyApi = new SpotifyWebApi();
-
-const Player = (props) => {
+const Player = () => {
   const params = useSearchParams();
   const { acesstoken, authtoken } = useContext(FetchContext);
   const [playing, setPlaying] = useState(true);
   const { data, isLoading, error, setdata, seterror, setisLoading } = useFetch(
-    authtoken,
-    "me"
+    acesstoken,
+    `tracks/${params.id}`
   );
 
-  // spotifyApi.setAccessToken(token);
 
   useEffect(() => {
-    // console.log(data?.album?.uri, acesstoken, authtoken);
     console.log(data);
-
-    // const play = async() => {
-    //   const token = await authtoken;
-    //   const data = {
-    //     context_uri: "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
-    //     offset: {
-    //       position: 5,
-    //     },
-    //     position_ms: 0,
-    //   };
-
-    //   const config = {
-    //     headers: {
-    //          "Content-Type": "application/json",
-    //          Authorization: `Bearer ${token}`
-    //      }
-    //  };
-
-    //   try {
-    //     await axios.put("https://api.spotify.com/v1/me/player/play" , data , config)
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // play();
-// spotifyApi.play()
-//   .then(function() {
-//     console.log('Playback started');
-//   }, function(err) {
-//     //if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned
-//     console.log('Something went wrong!', err);
-//   });
   }, []);
 
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          marginBottom: "1%",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() =>
-            spotifyApi.pause().then(
-              function () {
-                setPlaying(false);
-                console.log("Playback paused");
-              },
-              function (err) {
-                //if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned
-                console.log("Something went wrong!", err);
-              }
-            )
-          }
-          style={{
-            display: playing ? "flex" : "none",
-            paddingHorizontal: "10%",
-            paddingTop: "5%",
-            marginTop: Dimensions.get("window").height < 700 ? "10%" : "6%",
-          }}
-        >
-          <Ionicons name="pause" size={50} color="grey" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() =>
-            spotifyApi.play().then(
-              function () {
-                setPlaying(true);
-                console.log("Playback resumed");
-              },
-              function (err) {
-                //if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned
-                console.log("Something went wrong!", err);
-              }
-            )
-          }
-          style={{
-            display: playing ? "none" : "flex",
-            paddingHorizontal: "10%",
-            paddingTop: "5%",
-            marginTop: Dimensions.get("window").height < 700 ? "10%" : "6%",
-          }}
-        >
-          <Ionicons name="md-play-sharp" size={50} color="grey" />
-        </TouchableOpacity>
+    <View style = {{alignItems:"center" , padding : 20}}>
+      <View style = {styles.cardcontainer}>
+        <Image source={{uri : data?.album?.images?.[0]?.url}} resizeMode="contain" style = {styles.cardImg}/>
       </View>
-
-      {/* <View style={styles.musicProgress}>
-        <Text></Text>
-      </View> */}
+      <Text style = {styles.maintext}>{data?.album?.name.slice(0,20)}..</Text>
+      <Text style = {styles.typetext}>{data?.album?.release_date}</Text>
+      <View style = {{flexDirection : "row" ,marginTop:20 , justifyContent : "space-between",width:300, alignItems:"center" }}>
+        <TouchableOpacity style = {{height:30 , width : 30}}><Image source={replay} resizeMode="contain"  style={{height:30 , width : 30}}/></TouchableOpacity>
+        <View style = {{flexDirection:"row" , alignItems:"center" ,gap:9}}>
+        <TouchableOpacity style = {{height:30 , width : 30}}>
+        <Image source={backward}  resizeMode="contain"  style={{height:30 , width : 30}}/>
+        </TouchableOpacity>
+        <TouchableOpacity style = {{height:60 , width : 60}}>
+        <Image source={play}  resizeMode="contain"  style={{height:60 , width : 60}}/>
+        </TouchableOpacity>
+        <TouchableOpacity style = {{height:30 , width : 30}}>
+        <Image source={forward}  resizeMode="contain"  style={{height:30 , width : 30}}/>
+        </TouchableOpacity>
+        </View>
+        <TouchableOpacity style = {{height:30 , width : 30}}><Image source={shuffle}  resizeMode="contain"  style={{height:30 , width : 30}}/></TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 export default Player;
-
-const styles = StyleSheet.create({
-  musicProgress: {
-    backgroundColor: "grey",
-    marginLeft: "12%",
-    marginRight: "12%",
-    borderRadius: 30,
-  },
-});

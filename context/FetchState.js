@@ -11,6 +11,7 @@ const FetchState = (props)=>{
     const auth_token = Buffer.from(`${client_id}:${client_secret}` , 'utf-8').toString('base64');
     const [acesstoken, setacesstoken] = useState("")
     const [authtoken, setauthtoken] = useState("");
+    const [code, setcode] = useState("");
     const getAuth = async () =>{
         try {
             

@@ -15,6 +15,7 @@ const index = () => {
         options={{
           headerStyle: { backgroundColor: "#FFFFF0" },
           headerShadowVisible: false,
+          headerTitle : "",
           headerLeft: () => (
             <Headerbtn
               source={back}

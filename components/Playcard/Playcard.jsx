@@ -2,10 +2,14 @@ import React from 'react'
 import {View , Text , TouchableOpacity , Image} from "react-native"
 import styles from './Playcard.style'
 import poster from "../../asset/images/poster.jpg";
+import { useRouter } from 'expo-router';
 
 const Playcard = ({item}) => {
+
+  const router = useRouter();
+
   return (
-    <TouchableOpacity style={styles.song}>
+    <TouchableOpacity style={styles.song} onPress={()=>router.push(`/Player/${item?.track?.id}`)}>
           <View style = {{flexDirection : "row" , alignItems : "center"}}>
           <View>
             <Image

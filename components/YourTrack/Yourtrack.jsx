@@ -11,9 +11,8 @@ const Yourtrack = () => {
   const { authtoken } = useContext(FetchContext);
   const { data, isLoading, error, setdata, seterror, setisLoading } = useFetch(authtoken,
     "me/top/tracks/");
-  const router = useRouter();
-
   useEffect(()=>{
+    console.log(authtoken);
     console.log(data?.items?.[0]?.id);
   })
   return (

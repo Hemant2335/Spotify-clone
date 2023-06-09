@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import ArtCard from "../ArtCard/ArtCard";
 import poster from "../../asset/images/poster.jpg"
 
-const Profilebtn = () => {
+const Profilebtn = ({handlepress}) => {
   const { acesstoken, authtoken } = useContext(FetchContext);
   const { data, isLoading, error, setdata, seterror, setisLoading } = useFetch(
     authtoken,
@@ -35,7 +35,7 @@ const Profilebtn = () => {
       ) : (
         <>
           <View style={styles.newcont}>
-            <TouchableOpacity style={styles.cardcontainer}>
+            <TouchableOpacity style={styles.cardcontainer} onPress={handlepress}>
               <Image
                 source={(!data?.images?.[0])?(poster):{uri : data?.images?.[0]?.url}}
                 style={styles.cardImg}
